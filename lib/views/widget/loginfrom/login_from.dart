@@ -37,7 +37,7 @@ class LoginForm extends StatelessWidget {
                   errorText: EmailManager(loginController.emailController)
                           .validateEmail(loginController.emailController.text)
                       ? null
-                      : 'Invalid email format'),
+                      : 'รุปแปปอีเมลไม่ถูกต้อง'),
             ),
             const SizedBox(
               height: 20.0,
