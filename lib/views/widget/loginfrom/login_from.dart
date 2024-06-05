@@ -82,7 +82,7 @@ class LoginForm extends StatelessWidget {
               onTap: () {
                 Future.delayed(Duration.zero, () {
                   print('Email: ${loginController.emailController.text}');
-                  print('Passwordds: ${loginController.passwordController.text}');
+                  print('Password: ${loginController.passwordController.text}');
                 });
               },
               child: const Align(
