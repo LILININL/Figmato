@@ -8,11 +8,11 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return  Scaffold(
       body: Stack(
         children: <Widget>[
-          loginBackgroundWidget(),
-          Align(
+          const loginBackgroundWidget(),
+          const Align(
             alignment: Alignment.topCenter,
             child: Padding(
               padding: EdgeInsets.only(top: 20),

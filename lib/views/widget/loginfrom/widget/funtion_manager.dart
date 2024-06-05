@@ -1,38 +1,51 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 
-// คลาส PasswordManager สำหรับจัดการฟังก์ชันเกี่ยวกับรหัสผ่าน
-class PasswordManager {
-  final TextEditingController
-      passwordController; // ตัวควบคุม TextField สำหรับรหัสผ่าน
-  bool obscureText; // ตัวแปรเพื่อควบคุมการแสดง/ซ่อนรหัสผ่าน
+class LoginController extends GetxController {
+  var emailController = TextEditingController();
+  var passwordController = TextEditingController();
+  var obscureText = true.obs;
 
-  // Constructor สำหรับกำหนดค่าเริ่มต้นให้กับ passwordController และ obscureText
-  PasswordManager(this.passwordController, this.obscureText);
-
-  // ฟังก์ชัน clearPassword ใช้เพื่อเคลียร์ข้อมูลในช่องรหัสผ่าน
-  void clearPassword(Function setState) {
-    setState(() {
-      passwordController.clear(); // เคลียร์ข้อมูลใน TextField ของรหัสผ่าน
-    });
+  void togglePasswordVisibility() {
+    obscureText.value = !obscureText.value;
   }
 
-  // ฟังก์ชัน togglePasswordVisibility ใช้เพื่อเปลี่ยนสถานะการแสดง/ซ่อนรหัสผ่าน
-  void togglePasswordVisibility(Function setState) {
-    setState(() {
-      obscureText =
-          !obscureText; // สลับค่าของ obscureText ระหว่าง true และ false
-    });
+  void clearPassword() {
+    passwordController.clear();
   }
 
-  // ฟังก์ชัน checkPassword ใช้เพื่อตรวจสอบความถูกต้องของรหัสผ่าน
-  void checkPassword(Function setState) {
-    // แทนที่เงื่อนไขนี้ด้วยการตรวจสอบพาสเวิร์ดจริง
-    if (passwordController.text != 'correct_password') {
-      setState(() {
-        passwordController
-            .clear(); // เคลียร์ข้อมูลใน TextField ของรหัสผ่านหากไม่ถูกต้อง
-      });
+  Future<void> checkPassword(String email) async {
+    // Log ค่า email และ password
+    print('Email: $email');
+    print('Password: ${passwordController.text}');
+    const String apiUrl = 'http://172.20.10.7:6004/api/login';
+
+    final response = await http.post(
+      Uri.parse(apiUrl),
+      headers: <String, String>{
+        'Authorization': 'Bearer 950b88051dc87fe3fcb0b4df25eee676',
+        'Content-Type': 'application/json'
+      },
+      body: jsonEncode(<String, String>{
+        'user_email': email,
+        'user_password': passwordController.text,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      final responseBody = jsonDecode(response.body);
+
+      if (response.statusCode == 200) {
+        print(responseBody);
+        Get.offNamed('/home');
+      }
+    } else {
+      print(response.statusCode);
+      passwordController.clear();
+      Get.snackbar('Error', 'อีเมลหรือหรัสผ่านไม่ถูกต้อง');
     }
   }
 }
@@ -66,8 +79,6 @@ class EmailInputFormatter extends TextInputFormatter {
     return oldValue; // คืนค่าข้อความเก่าถ้าไม่อยู่ในรูปแบบอีเมล
   }
 }
-
-
 
 // รายละเอียดของแต่ละส่วน
 // PasswordManager
