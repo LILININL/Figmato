@@ -68,9 +68,12 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/images/lock.png
     - assets/images/bghome.png
+    - assets/images/Frame.png
+    - assets/images/civic.png
     - assets/images/loginbg.png
+    - assets/images/signupicon.png
+    - assets/images/taskappbbarbg.png
     - assets/images/bgsvgs/bghome.svg
     - assets/images/bgsvgs/loginbg.svg
     - assets/images/iconsvgs/civic.svg

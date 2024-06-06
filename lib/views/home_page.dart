@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg_provider/flutter_svg_provider.dart';
-import 'package:fristprofigmatest/views/widget/homefrom/%E0%B9%89homeservice/%E0%B9%89time_service.dart';
-import 'package:fristprofigmatest/views/widget/homefrom/%E0%B9%89homeservice/home_background.dart';
+import 'package:fristprofigmatest/views/widget/homefrom/homeservice/%E0%B9%89time_service.dart';
+import 'package:fristprofigmatest/views/widget/homefrom/homeservice/home_background.dart';
 import 'package:get/get.dart';
 
 class HomePage extends StatefulWidget {
@@ -57,7 +56,7 @@ class HomePageState extends State<HomePage> {
                     width: 250.0,
                     decoration: const BoxDecoration(
                       image: DecorationImage(
-                        image: Svg('assets/images/iconsvgs/Frame.svg'),
+                        image: AssetImage('assets/images/Frame.png'),
                         fit: BoxFit.contain,
                       ),
                     ),

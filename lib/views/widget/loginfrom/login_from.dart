@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:fristprofigmatest/views/widget/loginfrom/widget/button_styles.dart';
-import 'package:fristprofigmatest/views/widget/loginfrom/widget/funtion_manager.dart';
+import 'package:fristprofigmatest/views/widget/loginfrom/controllers/login_controller.dart';
 
 
 class LoginForm extends StatelessWidget {
@@ -16,29 +16,25 @@ class LoginForm extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const SizedBox(
-              height: 100.0,
-              width: 0,
-            ),
-            TextField(
+            
+            Obx(() => TextField(
               controller: loginController.emailController,
               inputFormatters: [EmailInputFormatter()],
               decoration: InputDecoration(
-                  filled: true,
-                  fillColor: const Color.fromARGB(255, 243, 243, 243),
-                  hintText: 'Email',
-                  hintStyle:
-                      const TextStyle(color: Color.fromARGB(102, 26, 26, 26)),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                    borderSide: BorderSide.none,
-                  ),
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  errorText: EmailManager(loginController.emailController)
-                          .validateEmail(loginController.emailController.text)
-                      ? null
-                      : 'รุปแปปอีเมลไม่ถูกต้อง'),
-            ),
+                filled: true,
+                fillColor: const Color.fromARGB(255, 243, 243, 243),
+                hintText: 'Email',
+                hintStyle: const TextStyle(color: Color.fromARGB(102, 26, 26, 26)),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide.none,
+                ),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
+                errorText: loginController.emailErrorText.value.isEmpty
+                    ? null
+                    : loginController.emailErrorText.value,
+              ),
+            )),
             const SizedBox(
               height: 20.0,
               width: 0,
@@ -81,8 +77,8 @@ class LoginForm extends StatelessWidget {
             GestureDetector(
               onTap: () {
                 Future.delayed(Duration.zero, () {
-                  print('Email: ${loginController.emailController.text}');
-                  print('Password: ${loginController.passwordController.text}');
+                  print('Forgot Password? bottom');
+                  
                 });
               },
               child: const Align(
@@ -99,7 +95,7 @@ class LoginForm extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () => loginController
-                  .checkPassword(loginController.emailController.text),
+                  .checkPassword(),
               style: SIGNINButton.buildStyle(),
               child: SIGNINButton.buildChild('SIGN IN'),
             ),
@@ -108,7 +104,9 @@ class LoginForm extends StatelessWidget {
               width: 0,
             ),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                Get.offNamed('/Signup');
+              },
               style: SIGNUPButton.buildStyle(),
               child: SIGNUPButton.buildChild('SIGN UP'),
             ),

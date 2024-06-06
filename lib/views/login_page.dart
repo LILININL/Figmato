@@ -8,18 +8,17 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
       body: Stack(
         children: <Widget>[
           const loginBackgroundWidget(),
-          const Align(
-            alignment: Alignment.topCenter,
+          SingleChildScrollView(
             child: Padding(
-              padding: EdgeInsets.only(top: 20),
+              padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  Padding(
+                  const Padding(
                     padding: EdgeInsets.all(8.0),
                     child: Text(
                       'SIGN IN',
@@ -29,7 +28,7 @@ class LoginPage extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Text(
+                  const Text(
                     'Please enter the information \n below to access.',
                     textAlign: TextAlign.center,
                     style: TextStyle(
@@ -37,20 +36,18 @@ class LoginPage extends StatelessWidget {
                       color: Colors.grey,
                     ),
                   ),
-                  Padding(
+                  const Padding(
                     padding: EdgeInsets.all(8.0),
                     child: Image(
                       image: Svg('assets/images/iconsvgs/civic.svg'),
                       height: 100,
                     ),
                   ),
+                  const SizedBox(height: 20,width: 0,),
+                   LoginForm(),
                 ],
               ),
             ),
-          ),
-          Align(
-            alignment: Alignment.center,
-            child: LoginForm(),
           ),
         ],
       ),

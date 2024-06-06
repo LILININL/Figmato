@@ -1,6 +1,8 @@
-import 'package:fristprofigmatest/views/widget/loginfrom/login_page.dart';
+import 'package:fristprofigmatest/views/login_page.dart';
+import 'package:fristprofigmatest/views/signup_page.dart';
+import 'package:fristprofigmatest/views/task_list_page.dart';
 import 'package:get/get.dart';
-import 'package:fristprofigmatest/views/widget/homefrom/home_page.dart';
+import 'package:fristprofigmatest/views/home_page.dart';
 
 class AppRoutes {
   static final routes = [
@@ -9,12 +11,24 @@ class AppRoutes {
       name: '/login',
       page: () => const LoginPage(),
       transition: Transition.leftToRight,
-      transitionDuration:const Duration(milliseconds: 800),
+      transitionDuration: const Duration(milliseconds: 500),
+    ),
+    GetPage(
+      name: '/Signup',
+      page: () => const SignupPage(),
+      transition: Transition.leftToRight,
+      transitionDuration: const Duration(milliseconds: 500),
+    ),
+    GetPage(
+      name: '/TaskList',
+      page: () => TaskListPage(),
+      transition: Transition.downToUp,
+      transitionDuration: const Duration(milliseconds: 500),
     ),
   ];
 }
 
-
+//TaskListPage
 // Transition.fade: หน้าจอจะค่อยๆ เลือนหายไป (Fade out) แล้วหน้าจอใหม่จะค่อยๆ ปรากฏขึ้น (Fade in)
 
 // Transition.rightToLeft: หน้าจอใหม่จะเลื่อนเข้ามาจากทางขวา และหน้าจอเดิมจะเลื่อนไปทางซ้าย
