@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fristprofigmatest/colors/colors.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -22,22 +23,22 @@ class ProfileBottomSheet extends StatelessWidget {
         children: [
           const Text(
             'ออกจากระบบ',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 18,
-            ),
+            style: TextStyle(color: NotificationColors.dark, fontSize: 18),
           ),
-          const SizedBox(height: 8,width: 0,),
-          Text(
+          const Text(
             'คุณต้องการออกจากระบบ ?',
-            style: TextStyle(
-              color: Colors.grey[600],
-            ),
+            style: TextStyle(color: NotificationColors.dark, fontSize: 16),
           ),
-          const SizedBox(height: 16,width: 0,),
+          const SizedBox(
+            height: 16,
+            width: 0,
+          ),
           ListTile(
-            leading: const Icon(Icons.logout, color: Colors.green),
-            title: const Text('ออกจากระบบ'),
+            leading: Image.asset('assets/icons/Logout.png'),
+            title: const Text(
+              'ออกจากระบบ',
+              style: TextStyle(color: NotificationColors.dark, fontSize: 16),
+            ),
             onTap: _signOut,
           ),
         ],

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fristprofigmatest/views/widget/homefrom/homeservice/%E0%B9%89time_service.dart';
+import 'package:fristprofigmatest/views/widget/homefrom/homeservice/time_service.dart';
 import 'package:fristprofigmatest/views/widget/homefrom/homeservice/home_background.dart';
 import 'package:get/get.dart';
 

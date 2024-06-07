@@ -78,15 +78,11 @@ flutter:
     - assets/images/bgsvgs/loginbg.svg
     - assets/images/iconsvgs/civic.svg
     - assets/images/iconsvgs/Frame.svg
-    # - assets/logo/
-    # - assets/logo/logo-horizontal.png
-    # - assets/flag/
-    # - assets/images/onboard/onboard.png
-    # - assets/images/profile/avatar/empty-avatar.png
-    # - assets/images/profile/avatar/looking-for-jobs-vector.png
-    # - assets/images/profile/avatar/post-job-vector.png
-    # - assets/images/iconsvg/checkboxtrue.svg
-    # - assets/images/iconsvg/chboxfalse.svg
+    - assets/icons/Arrowleft.png
+    - assets/icons/ButtonAdd.png
+    - assets/icons/Edit.png
+    - assets/icons/Logout.png
+    - assets/icons/Trash.png
     
 
   # An image asset can refer to one or more resolution-specific "variants", see

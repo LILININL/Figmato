@@ -1,8 +1,10 @@
-import 'package:fristprofigmatest/views/login_page.dart';
-import 'package:fristprofigmatest/views/signup_page.dart';
-import 'package:fristprofigmatest/views/task_list_page.dart';
+import 'package:fristprofigmatest/utils/shared_preferences_helper.dart';
+import 'package:fristprofigmatest/views/widget/loginfrom/login_page.dart';
+import 'package:fristprofigmatest/views/widget/signupfrom/signup_page.dart';
+import 'package:fristprofigmatest/views/widget/taskfrom/task_list_page.dart';
+import 'package:fristprofigmatest/views/widget/taskfrom/widget/task_edit_page.dart';
 import 'package:get/get.dart';
-import 'package:fristprofigmatest/views/home_page.dart';
+import 'package:fristprofigmatest/views/widget/homefrom/home_page.dart';
 
 class AppRoutes {
   static final routes = [
@@ -25,9 +27,24 @@ class AppRoutes {
       transition: Transition.downToUp,
       transitionDuration: const Duration(milliseconds: 500),
     ),
+    GetPage(
+      name: '/TaskEdit',
+      page: () => TaskEditPage(
+        taskId: Get.arguments['taskId'],
+        initialTitle: Get.arguments['initialTitle'],
+        initialDescription: Get.arguments['initialDescription'],
+        initialCompleted: Get.arguments['initialCompleted'],
+        userId: Get.arguments['userId'],
+      ),
+      transition: Transition.downToUp,
+      transitionDuration: const Duration(milliseconds: 500),
+    ),
   ];
 }
 
+String determineInitialRoute(bool isLoggedIn) {
+  return isLoggedIn ? '/TaskList' : '/';
+}
 //TaskListPage
 // Transition.fade: หน้าจอจะค่อยๆ เลือนหายไป (Fade out) แล้วหน้าจอใหม่จะค่อยๆ ปรากฏขึ้น (Fade in)
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fristprofigmatest/views/login_page.dart';
+import 'package:fristprofigmatest/views/widget/loginfrom/login_page.dart';
 import 'package:get/get.dart';
 import 'package:fristprofigmatest/services/signupapi_service.dart'; // Import the ApiService
 

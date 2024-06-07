@@ -9,7 +9,8 @@ class TaskItem extends StatelessWidget {
   final ValueChanged<bool?> onChanged;
   final VoidCallback onEdit;
 
-  TaskItem({
+  const TaskItem({
+    super.key,
     required this.id,
     required this.title,
     required this.time,
@@ -30,7 +31,7 @@ class TaskItem extends StatelessWidget {
           children: [
             SizedBox(
               height: 24, // ขนาดของ Checkbox
-              width: 24,  // ขนาดของ Checkbox
+              width: 24, // ขนาดของ Checkbox
               child: Transform.scale(
                 scale: 1.5, // เพิ่มขนาดของ Checkbox
                 child: Checkbox(
@@ -42,7 +43,10 @@ class TaskItem extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(width: 16,height: 0,),
+            const SizedBox(
+              width: 16,
+              height: 0,
+            ),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -55,7 +59,10 @@ class TaskItem extends StatelessWidget {
                       fontSize: 18,
                     ),
                   ),
-                  const SizedBox(height: 8 ,width: 0,),
+                  const SizedBox(
+                    height: 8,
+                    width: 0,
+                  ),
                   Text(
                     time,
                     style: const TextStyle(
@@ -63,7 +70,10 @@ class TaskItem extends StatelessWidget {
                       fontSize: 14,
                     ),
                   ),
-                  const SizedBox(height: 8,width: 0,),
+                  const SizedBox(
+                    height: 8,
+                    width: 0,
+                  ),
                   Text(
                     description,
                     style: const TextStyle(
@@ -74,10 +84,13 @@ class TaskItem extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(width: 16,height: 0,),
+            const SizedBox(
+              width: 16,
+              height: 0,
+            ),
             IconButton(
               icon: const Icon(Icons.more_vert),
-              onPressed: onEdit, // เรียกใช้ callback เมื่อกดปุ่ม
+              onPressed: onEdit, 
             ),
           ],
         ),

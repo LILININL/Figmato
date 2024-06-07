@@ -1,6 +1,8 @@
 import 'dart:convert';
-import 'package:get/get.dart';
+import 'package:fristprofigmatest/colors/colors.dart';
+import 'package:fristprofigmatest/utils/json/login_jsondata.dart';
 import 'package:http/http.dart' as http;
+import 'package:get/get.dart';
 
 class ApiService {
   static const String _baseUrl = 'http://192.168.27.143:6004/api';
@@ -9,7 +11,7 @@ class ApiService {
     'Content-Type': 'application/json'
   };
 
-  Future<void> checkPassword(String email, String password) async {
+  Future<LoginResponse?> checkPassword(String email, String password) async {
     const String apiUrl = '$_baseUrl/login';
 
     try {
@@ -24,15 +26,20 @@ class ApiService {
 
       if (response.statusCode == 200) {
         final responseBody = jsonDecode(response.body);
-        print(responseBody);
-        Get.offNamed('/TaskList');
+        return LoginResponse.fromJson(responseBody);
       } else {
         print(response.statusCode);
-        Get.snackbar('ผิดพลาด', 'อีเมลหรือรหัสผ่านไม่ถูกต้อง');
+        Get.snackbar('ผิดพลาด', 'อีเมลหรือรหัสผ่านไม่ถูกต้อง',
+            colorText: NotificationColors.dark);
+        return null;
       }
     } catch (e) {
       print('ผิดพลาด: $e');
-      Get.snackbar('ผิดพลาด', 'เกิดข้อผิดพลาดบางอย่าง');
+      Get.snackbar('ผิดพลาด',
+          'เกิดข้อผิดพลาดบางอย่างทำให้ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้ \nโปรดเช็คการเชื่อมต่อของคุณ',
+          colorText: NotificationColors.dark);
+      return null;
     }
   }
 }
+

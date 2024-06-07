@@ -1,24 +1,35 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPreferencesHelper {
-  static Future<void> saveUserData(String email, String password) async {
+  static const String Email = 'useremail';
+  static const String Fname = 'userfname';
+  static const String Lname = 'userlname';
+  static const String UserId = 'userid';
+
+  static Future<void> saveUserInfo(
+      int userId, String userEmail, String userFname, String userLname) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('user_email', email);
-    await prefs.setString('user_password', password);
+    await prefs.setInt(UserId, userId);
+    await prefs.setString(Email, userEmail);
+    await prefs.setString(Fname, userFname);
+    await prefs.setString(Lname, userLname);
   }
 
-  static Future<String?> getEmail() async {
+  static Future<Map<String, dynamic>> getUserInfo() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString('user_email');
+    return {
+      UserId: prefs.getInt(UserId),
+      Email: prefs.getString(Email),
+      Fname: prefs.getString(Fname),
+      Lname: prefs.getString(Lname),
+    };
   }
 
-  static Future<String?> getPassword() async {
+  static Future<void> clearUserInfo() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString('user_password');
-  }
-
-  static Future<void> clearData() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.clear();
+    await prefs.remove(UserId);
+    await prefs.remove(Email);
+    await prefs.remove(Fname);
+    await prefs.remove(Lname);
   }
 }

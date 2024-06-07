@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg_provider/flutter_svg_provider.dart';
-import 'package:fristprofigmatest/views/widget/loginfrom/login_from.dart';
+import 'package:fristprofigmatest/views/widget/loginfrom/login_page.dart';
 import 'package:fristprofigmatest/views/widget/loginfrom/widget/login_background.dart';
+import 'package:fristprofigmatest/views/widget/signupfrom/widget/signup_from.dart';
+import 'package:get/get.dart';  // Import GetX
 
-class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+class SignupPage extends StatelessWidget {
+  const SignupPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +22,7 @@ class LoginPage extends StatelessWidget {
                   const Padding(
                     padding: EdgeInsets.all(8.0),
                     child: Text(
-                      'SIGN IN',
+                      'SIGN UP',
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
@@ -39,14 +40,24 @@ class LoginPage extends StatelessWidget {
                   const Padding(
                     padding: EdgeInsets.all(8.0),
                     child: Image(
-                      image: Svg('assets/images/iconsvgs/civic.svg'),
+                      image: AssetImage('assets/images/signupicon.png'),
                       height: 100,
                     ),
                   ),
                   const SizedBox(height: 20,width: 0,),
-                   LoginForm(),
+                   SignupForm(),
                 ],
               ),
+            ),
+          ),
+          Positioned(
+            top: 5,
+            left: 5,
+            child: IconButton(
+              icon: const Icon(Icons.arrow_back),
+              onPressed: () {
+                Get.offAll(() => const LoginPage(), transition: Transition.rightToLeft);
+              },
             ),
           ),
         ],

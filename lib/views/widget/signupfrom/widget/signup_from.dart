@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fristprofigmatest/views/widget/loginfrom/controllers/login_controller.dart';
 import 'package:get/get.dart';
-import '../loginfrom/widget/button_styles.dart';
-import 'controller/signup_controller.dart';
+import '../../loginfrom/widget/button_styles.dart';
+import '../controller/signup_controller.dart';
 
 class SignupForm extends StatelessWidget {
   final SignupController signupController = Get.put(SignupController());

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fristprofigmatest/services/loginapi_service.dart';
+import 'package:fristprofigmatest/utils/shared_preferences_helper.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
@@ -19,9 +20,10 @@ class LoginController extends GetxController {
   }
 
   void _validateEmail() {
-    emailErrorText.value = EmailManager(emailController).validateEmail(emailController.text)
-        ? ''
-        : 'รูปแบบอีเมลไม่ถูกต้อง';
+    emailErrorText.value =
+        EmailManager(emailController).validateEmail(emailController.text)
+            ? ''
+            : 'รูปแบบอีเมลไม่ถูกต้อง';
   }
 
   void togglePasswordVisibility() {
@@ -40,7 +42,16 @@ class LoginController extends GetxController {
     print('Email: $email');
     print('Password: $password');
 
-    await apiService.checkPassword(email, password);
+    final response = await apiService.checkPassword(email, password);
+    if (response != null) {
+      await SharedPreferencesHelper.saveUserInfo(
+        response.userId,
+        response.userEmail,
+        response.userFname,
+        response.userLname,
+      );
+      Get.offNamed('/TaskList');
+    }
   }
 }
 
