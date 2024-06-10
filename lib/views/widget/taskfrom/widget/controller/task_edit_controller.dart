@@ -1,5 +1,4 @@
 import 'package:fristprofigmatest/services/task_edit_sevice.dart';
-import 'package:fristprofigmatest/utils/json/task_edit_jsondata.dart';
 import 'package:get/get.dart';
 
 class TaskEditController extends GetxController {
@@ -7,6 +6,8 @@ class TaskEditController extends GetxController {
   var taskDescription = ''.obs;
   var taskCompleted = false.obs;
   var userId = ''.obs;
+  var userTodoTypeId = 0.obs; // เพิ่มตัวแปรนี้เพื่อให้ตรงกับ JSON
+  var userTodoTypeName = ''.obs; // เพิ่มตัวแปรนี้เพื่อให้ตรงกับ JSON
 
   void setTitle(String title) {
     taskTitle.value = title;
@@ -24,20 +25,31 @@ class TaskEditController extends GetxController {
     userId.value = id;
   }
 
-  Future<void> saveTask(int taskId) async {
-    var jsonData = TaskEditJsonData(
-      userTodoListId: taskId.toString(),
-      userTodoListTitle: taskTitle.value,
-      userTodoListDesc: taskDescription.value,
-      userTodoListCompleted: taskCompleted.value.toString(),
-      userId: userId.value,
-    );
+  void setUserTodoTypeId(int id) {
+    userTodoTypeId.value = id;
+  }
 
-    var result = await TaskEditService.updateTask(jsonData.toJson());
+  void setUserTodoTypeName(String name) {
+    userTodoTypeName.value = name;
+  }
+
+  Future<void> saveTask(int taskId) async {
+    var jsonData = {
+      'user_todo_list_id': taskId,
+      'user_todo_list_title': taskTitle.value,
+      'user_todo_list_desc': taskDescription.value,
+      'user_todo_list_completed': taskCompleted.value.toString(),
+      'user_todo_list_last_update': DateTime.now().toIso8601String(),
+      'user_id': int.tryParse(userId.value) ?? 0,
+      'user_todo_type_id': userTodoTypeId.value,
+      'user_todo_type_name': userTodoTypeName.value,
+    };
+
+    var result = await TaskEditService.updateTask(jsonData);
     if (result) {
-      Get.back();
+      Get.back(result: true); // ส่งผลลัพธ์กลับเมื่อบันทึกสำเร็จ
     } else {
-      Get.snackbar('Error', 'Could not update task');
+      Get.snackbar('Error', 'ไม่สามารถเชื่อมต่อเชิฟเวอร์ได้ !');
     }
   }
 }

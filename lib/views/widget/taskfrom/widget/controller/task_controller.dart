@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:fristprofigmatest/services/task_service.dart';
 import 'package:fristprofigmatest/utils/json/task_jsondata.dart';
 import 'package:get/get.dart';
@@ -8,12 +9,16 @@ class TaskController extends GetxController {
 
   @override
   void onInit() {
-    fetchTodoList();
     super.onInit();
+    fetchTodoList();
   }
 
-  void fetchTodoList() async {
-    todoList.value = await TaskService.fetchTodoList();
+  Future<void> fetchTodoList() async {
+    try {
+      todoList.value = await TaskService.fetchTodoList();
+    } on TimeoutException catch (e) {
+      print('A timeout : ${e.message}');
+    }
   }
 
   void updateSearchText(String text) {

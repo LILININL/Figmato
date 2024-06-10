@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:fristprofigmatest/colors/colors.dart';
 import 'package:fristprofigmatest/services/deletetask_serveice.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
 
-void showTaskEditBottomSheet(BuildContext context, int taskId) {
-  showModalBottomSheet(
+Future<bool?> showTaskEditBottomSheet(
+    BuildContext context, int taskId, String title, String desc) {
+  return showModalBottomSheet<bool>(
     context: context,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
@@ -25,8 +25,17 @@ void showTaskEditBottomSheet(BuildContext context, int taskId) {
                 'Edit',
                 style: TextStyle(color: NotificationColors.dark, fontSize: 16),
               ),
-              onTap: () {
-                Get.to('/TaskEdit');
+              onTap: () async {
+                Get.back(); // ปิด bottom sheet
+                final result = await Get.toNamed(
+                  '/TaskEdit',
+                  parameters: {
+                    'taskId': taskId.toString(),
+                    'title': title,
+                    'desc': desc,
+                  },
+                );
+                Get.back(result: result);
               },
             ),
             const Divider(),
@@ -41,9 +50,8 @@ void showTaskEditBottomSheet(BuildContext context, int taskId) {
               ),
               onTap: () async {
                 print(taskId);
-                await DeleteTaskService.deleteTask(
-                    taskId); // เรียกใช้งาน DeleteTaskService;
-                Navigator.pop(context); // ปิด bottom sheet
+                await DeleteTaskService.deleteTask(taskId);
+                Get.back(result: true); // ปิด bottom sheet และส่งผลลัพธ์กลับ
               },
             ),
           ],

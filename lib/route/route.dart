@@ -1,7 +1,8 @@
-import 'package:fristprofigmatest/utils/shared_preferences_helper.dart';
+import 'package:flutter/material.dart';
 import 'package:fristprofigmatest/views/widget/loginfrom/login_page.dart';
 import 'package:fristprofigmatest/views/widget/signupfrom/signup_page.dart';
 import 'package:fristprofigmatest/views/widget/taskfrom/task_list_page.dart';
+import 'package:fristprofigmatest/views/widget/taskfrom/widget/task_add.dart';
 import 'package:fristprofigmatest/views/widget/taskfrom/widget/task_edit_page.dart';
 import 'package:get/get.dart';
 import 'package:fristprofigmatest/views/widget/homefrom/home_page.dart';
@@ -28,14 +29,26 @@ class AppRoutes {
       transitionDuration: const Duration(milliseconds: 500),
     ),
     GetPage(
+      name: '/TaskAdd',
+      page: () => const TaskAddPage(),
+      transition: Transition.downToUp,
+      transitionDuration: const Duration(milliseconds: 500),
+    ),
+    GetPage(
       name: '/TaskEdit',
-      page: () => TaskEditPage(
-        taskId: Get.arguments['taskId'],
-        initialTitle: Get.arguments['initialTitle'],
-        initialDescription: Get.arguments['initialDescription'],
-        initialCompleted: Get.arguments['initialCompleted'],
-        userId: Get.arguments['userId'],
-      ),
+      page: () {
+        final taskId = Get.parameters['taskId'];
+        final title = Get.parameters['title'];
+        final desc = Get.parameters['desc'];
+        if (taskId == null) {
+          return const Center(child: Text('Task ID is missing.'));
+        }
+        return TaskEditPage(
+          taskId: int.parse(taskId),
+          initialTitle: title ?? '',
+          initialDesc: desc ?? '',
+        );
+      },
       transition: Transition.downToUp,
       transitionDuration: const Duration(milliseconds: 500),
     ),

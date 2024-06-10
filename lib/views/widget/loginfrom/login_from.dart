@@ -89,7 +89,7 @@ class LoginForm extends StatelessWidget {
               ),
             ),
             const SizedBox(
-              height: 200.0,
+              height: 150.0,
               width: 0,
             ),
             ElevatedButton(

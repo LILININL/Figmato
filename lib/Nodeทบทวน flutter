@@ -1,0 +1,13 @@
+Scaffold vs Container 
+Scaffold คือ แมตทีเรียลเฉพาะ
+มี Body Drawer มี bottomNavigationBar
+FloatingAction bottomNaviga
+Expended คือ การเอาพื้นที่วางที่เหลือ ?! 
+LayoutBuilder การวัดความกว้างความยาวหน้าจอ 
+Sapcer() = ให้ห่างจาก อันบนที่สุด ?
+
+พวกฟังชั้น Builder 
+Futuer เป็นการดึงข้อมูลที่ สร้างขึ้นมาใส่ 
+
+ฐานข้อมูล 
+async await 

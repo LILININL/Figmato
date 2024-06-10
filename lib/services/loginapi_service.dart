@@ -1,23 +1,18 @@
 import 'dart:convert';
 import 'package:fristprofigmatest/colors/colors.dart';
+import 'package:fristprofigmatest/services/config/api_url_config.dart';
 import 'package:fristprofigmatest/utils/json/login_jsondata.dart';
 import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
 
 class ApiService {
-  static const String _baseUrl = 'http://192.168.27.143:6004/api';
-  static const Map<String, String> _headers = {
-    'Authorization': 'Bearer 950b88051dc87fe3fcb0b4df25eee676',
-    'Content-Type': 'application/json'
-  };
-
   Future<LoginResponse?> checkPassword(String email, String password) async {
-    const String apiUrl = '$_baseUrl/login';
+    const String apiUrl = '$baseUrl/login';
 
     try {
       final response = await http.post(
         Uri.parse(apiUrl),
-        headers: _headers,
+        headers: headers,
         body: jsonEncode(<String, String>{
           'user_email': email,
           'user_password': password,
@@ -42,4 +37,3 @@ class ApiService {
     }
   }
 }
-
