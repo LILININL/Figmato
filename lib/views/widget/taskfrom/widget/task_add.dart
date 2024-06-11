@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:fristprofigmatest/utils/json/task_add_jsondata.dart';
+import 'package:fristprofigmatest/utils/shared_preferences_helper.dart';
 import 'package:fristprofigmatest/views/widget/taskfrom/widget/bg.dart';
 import 'package:get/get.dart';
+import 'controller/task_add_controller.dart';
 
 class TaskAddPage extends StatefulWidget {
   const TaskAddPage({super.key});
@@ -10,7 +13,44 @@ class TaskAddPage extends StatefulWidget {
 }
 
 class TaskAddPageState extends State<TaskAddPage> {
+  final TaskAddController controller = Get.put(TaskAddController());
   bool isSuccess = false;
+  final TextEditingController titleController = TextEditingController();
+  final TextEditingController descController = TextEditingController();
+
+  void saveTask() async {
+    // ดึงข้อมูลผู้ใช้จาก SharedPreferences
+    final userInfo = await SharedPreferencesHelper.getUserInfo();
+
+    final newTask = TaskAddJsonData(
+      userTodoTypeId: 13, // ตัวอย่างการกำหนดค่า
+      userTodoListTitle: titleController.text,
+      userTodoListDesc: descController.text,
+      userTodoListCompleted: isSuccess,
+      userId: userInfo[SharedPreferencesHelper.UserId] as int,
+    );
+
+    bool result = await controller.createTodo(newTask);
+
+    if (result) {
+      Get.snackbar(
+        'ยินดีด้วย',
+        'สร้าง Todo สำเร็จแล้ว',
+        snackPosition: SnackPosition.TOP,
+        backgroundColor: Colors.green,
+        colorText: Colors.white,
+      );
+      Get.offAllNamed('/TaskList');
+    } else {
+      Get.snackbar(
+        'ล้มเหลว',
+        'ไม่สามารถสร้างได้',
+        snackPosition: SnackPosition.TOP,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +58,7 @@ class TaskAddPageState extends State<TaskAddPage> {
       appBar: AppBar(
         titleSpacing: 0,
         title: const Text(
-          'Add You Todu',
+          'Add You Todo',
           style: TextStyle(color: Colors.white, fontSize: 18),
         ),
         leading: IconButton(
@@ -56,9 +96,10 @@ class TaskAddPageState extends State<TaskAddPage> {
                   ),
                 ],
               ),
-              child: const TextField(
-                decoration: InputDecoration(
-                  hintText: 'Metting',
+              child: TextField(
+                controller: titleController,
+                decoration: const InputDecoration(
+                  hintText: 'Meeting',
                   border: InputBorder.none,
                 ),
               ),
@@ -78,9 +119,10 @@ class TaskAddPageState extends State<TaskAddPage> {
                   ),
                 ],
               ),
-              child: const TextField(
+              child: TextField(
+                controller: descController,
                 maxLines: 4,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText:
                       'An effective meeting agenda is a plan you share with your meeting participants. It’ll help your team set clear expectations of what needs to happen before.',
                   border: InputBorder.none,
@@ -126,10 +168,7 @@ class TaskAddPageState extends State<TaskAddPage> {
             ),
             const Spacer(),
             ElevatedButton(
-              onPressed: () {
-                // Add save action
-                print('Save action with Success status: $isSuccess');
-              },
+              onPressed: saveTask,
               style: ElevatedButton.styleFrom(
                 minimumSize: const Size(double.infinity, 60),
                 backgroundColor: Colors.green,

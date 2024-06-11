@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:fristprofigmatest/services/task_edit_sevice.dart';
 import 'package:get/get.dart';
 
@@ -33,11 +34,14 @@ class TaskEditController extends GetxController {
     userTodoTypeName.value = name;
   }
 
-  Future<void> saveTask(int taskId) async {
+  Future<void> saveTask(
+      int taskId, String initialTitle, String initialDesc) async {
     var jsonData = {
       'user_todo_list_id': taskId,
-      'user_todo_list_title': taskTitle.value,
-      'user_todo_list_desc': taskDescription.value,
+      'user_todo_list_title':
+          taskTitle.value.isEmpty ? initialTitle : taskTitle.value,
+      'user_todo_list_desc':
+          taskDescription.value.isEmpty ? initialDesc : taskDescription.value,
       'user_todo_list_completed': taskCompleted.value.toString(),
       'user_todo_list_last_update': DateTime.now().toIso8601String(),
       'user_id': int.tryParse(userId.value) ?? 0,
@@ -47,9 +51,25 @@ class TaskEditController extends GetxController {
 
     var result = await TaskEditService.updateTask(jsonData);
     if (result) {
-      Get.back(result: true); // ส่งผลลัพธ์กลับเมื่อบันทึกสำเร็จ
+      Get.snackbar(
+        'แก้ไขสำเร็จ',
+        'แก้ไขและบันทึก Todo สำเร็จ',
+        snackPosition: SnackPosition.TOP,
+        backgroundColor: Colors.green,
+        colorText: Colors.white,
+      );
+      Future.delayed(Duration(seconds: 1), () {
+        Get.offNamed('/TaskList',
+            arguments: true); // ส่งผลลัพธ์กลับเมื่อบันทึกสำเร็จ
+      });
     } else {
-      Get.snackbar('Error', 'ไม่สามารถเชื่อมต่อเชิฟเวอร์ได้ !');
+      Get.snackbar(
+        'Error',
+        'ไม่สามารถเชื่อมต่อเชิฟเวอร์ได้ !',
+        snackPosition: SnackPosition.TOP,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
     }
   }
 }

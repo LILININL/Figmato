@@ -53,3 +53,40 @@ class TaskController extends GetxController {
     todoList.refresh();
   }
 }
+
+class TaskEditController extends GetxController {
+  var taskCompleted = false.obs;
+  var userId = ''.obs;
+  var title = ''.obs;
+  var description = ''.obs;
+  var userTodoTypeId = 13.obs;
+  var userTodoTypeName = 'Objective-C'.obs;
+
+  void setCompleted(bool value) {
+    taskCompleted.value = value;
+  }
+
+  void setUserId(String value) {
+    userId.value = value;
+  }
+
+  void setTitle(String value) {
+    title.value = value;
+  }
+
+  void setDescription(String value) {
+    description.value = value;
+  }
+
+  void setUserTodoTypeId(int value) {
+    userTodoTypeId.value = value;
+  }
+
+  void setUserTodoTypeName(String value) {
+    userTodoTypeName.value = value;
+  }
+
+  Future<void> saveTask(int taskId) async {
+    
+  }
+}

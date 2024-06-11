@@ -8,12 +8,14 @@ class TaskEditPage extends StatefulWidget {
   final int taskId;
   final String initialTitle;
   final String initialDesc;
+  final bool initialCompleted;
 
   const TaskEditPage({
     super.key,
     required this.taskId,
     required this.initialTitle,
     required this.initialDesc,
+    required this.initialCompleted,
   });
 
   @override
@@ -30,6 +32,8 @@ class TaskEditPageState extends State<TaskEditPage> {
     super.initState();
     titleController = TextEditingController(text: widget.initialTitle);
     descriptionController = TextEditingController(text: widget.initialDesc);
+    taskEditController
+        .setCompleted(widget.initialCompleted); // Set initial value
     _loadUserId(); // โหลด userId
     taskEditController.setUserTodoTypeId(13); // ค่าเริ่มต้น
     taskEditController.setUserTodoTypeName("Objective-C"); // ค่าเริ่มต้น
@@ -167,7 +171,11 @@ class TaskEditPageState extends State<TaskEditPage> {
             const Spacer(),
             ElevatedButton(
               onPressed: () {
-                taskEditController.saveTask(widget.taskId);
+                taskEditController.saveTask(
+                  widget.taskId,
+                  widget.initialTitle,
+                  widget.initialDesc,
+                );
               },
               style: ElevatedButton.styleFrom(
                 minimumSize: const Size(double.infinity, 60),

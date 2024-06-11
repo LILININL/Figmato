@@ -25,6 +25,11 @@ class SharedPreferencesHelper {
     };
   }
 
+  static Future<String?> getUserId() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getInt(UserId)?.toString();
+  }
+
   static Future<void> clearUserInfo() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.remove(UserId);

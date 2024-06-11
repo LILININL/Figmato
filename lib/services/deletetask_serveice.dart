@@ -3,13 +3,16 @@ import 'package:http/http.dart' as http;
 
 class DeleteTaskService {
   static Future<void> deleteTask(int taskId) async {
-    final url = Uri.parse('$baseUrl/delete_todo/${taskId.toString()}');
-    final response = await http.delete(url, headers: headers);
+    var request =
+        http.Request('DELETE', Uri.parse('$baseUrl/delete_todo/$taskId'));
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
 
     if (response.statusCode == 200) {
-      print('Task deleted successfully');
+      print('Todo deleted successfully');
     } else {
-      print('Failed to delete task: ${response.statusCode}');
+      throw Exception('Failed to delete todo: ${response.reasonPhrase}');
     }
   }
 }

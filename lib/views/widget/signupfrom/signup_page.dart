@@ -1,66 +1,236 @@
 import 'package:flutter/material.dart';
-import 'package:fristprofigmatest/views/widget/loginfrom/login_page.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_svg_provider/flutter_svg_provider.dart';
+import 'package:fristprofigmatest/views/widget/loginfrom/controllers/login_controller.dart';
+import 'package:get/get.dart';
+import 'package:fristprofigmatest/utils/exitfuntion/loginexit_confirmation_dialog.dart';
+import 'package:fristprofigmatest/views/widget/loginfrom/widget/button_styles.dart';
 import 'package:fristprofigmatest/views/widget/loginfrom/widget/login_background.dart';
-import 'package:fristprofigmatest/views/widget/signupfrom/widget/signup_from.dart';
-import 'package:get/get.dart';  // Import GetX
+import 'package:fristprofigmatest/views/widget/signupfrom/controller/signup_controller.dart';
+import 'package:fristprofigmatest/views/widget/loginfrom/login_page.dart';
 
 class SignupPage extends StatelessWidget {
-  const SignupPage({super.key});
+  final SignupController signupController = Get.put(SignupController());
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: <Widget>[
-          const loginBackgroundWidget(),
-          SingleChildScrollView(
-            child: Padding(
-              padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Text(
-                      'SIGN UP',
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
+    return WillPopScope(
+      onWillPop: () => loginshowExitConfirmationDialog(context),
+      child: Scaffold(
+        body: Stack(
+          children: <Widget>[
+            const loginBackgroundWidget(),
+            Column(
+              children: <Widget>[
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                          top: MediaQuery.of(context).padding.top),
+                      child: Column(
+                        children: <Widget>[
+                          const Padding(
+                            padding: EdgeInsets.fromLTRB(10, 30, 10, 30),
+                            child: Text(
+                              'SIGN UP',
+                              style: TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          const Text(
+                            'Please enter the information \n below to access.',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.grey,
+                            ),
+                          ),
+                          const Padding(
+                            padding: EdgeInsets.fromLTRB(8, 20, 8, 60),
+                            child: Image(
+                              image: Svg('assets/images/iconsvgs/civic.svg'),
+                              height: 100,
+                            ),
+                          ),
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 20.0),
+                            child: Column(
+                              children: <Widget>[
+                                Obx(() => TextField(
+                                      controller:
+                                          signupController.firstNameController,
+                                      decoration: InputDecoration(
+                                        filled: true,
+                                        fillColor: const Color.fromARGB(
+                                            255, 243, 243, 243),
+                                        hintText: 'First name',
+                                        hintStyle: const TextStyle(
+                                            color: Color.fromARGB(
+                                                102, 26, 26, 26)),
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                          borderSide: BorderSide.none,
+                                        ),
+                                        contentPadding:
+                                            const EdgeInsets.symmetric(
+                                                horizontal: 20.0),
+                                        errorText: signupController
+                                                .firstNameErrorText
+                                                .value
+                                                .isEmpty
+                                            ? null
+                                            : signupController
+                                                .firstNameErrorText.value,
+                                      ),
+                                    )),
+                                const SizedBox(
+                                  height: 15.0,
+                                  width: 0,
+                                ),
+                                Obx(() => TextField(
+                                      controller:
+                                          signupController.lastNameController,
+                                      decoration: InputDecoration(
+                                        filled: true,
+                                        fillColor: const Color.fromARGB(
+                                            255, 243, 243, 243),
+                                        hintText: 'Last name',
+                                        hintStyle: const TextStyle(
+                                            color: Color.fromARGB(
+                                                102, 26, 26, 26)),
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                          borderSide: BorderSide.none,
+                                        ),
+                                        contentPadding:
+                                            const EdgeInsets.symmetric(
+                                                horizontal: 20.0),
+                                        errorText: signupController
+                                                .lastNameErrorText.value.isEmpty
+                                            ? null
+                                            : signupController
+                                                .lastNameErrorText.value,
+                                      ),
+                                    )),
+                                const SizedBox(
+                                  height: 15.0,
+                                  width: 0,
+                                ),
+                                Obx(() => TextField(
+                                      controller:
+                                          signupController.emailController,
+                                      inputFormatters: [EmailInputFormatter()],
+                                      decoration: InputDecoration(
+                                        filled: true,
+                                        fillColor: const Color.fromARGB(
+                                            255, 243, 243, 243),
+                                        hintText: 'Email',
+                                        hintStyle: const TextStyle(
+                                            color: Color.fromARGB(
+                                                102, 26, 26, 26)),
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                          borderSide: BorderSide.none,
+                                        ),
+                                        contentPadding:
+                                            const EdgeInsets.symmetric(
+                                                horizontal: 20.0),
+                                        errorText: signupController
+                                                .emailErrorText.value.isEmpty
+                                            ? null
+                                            : signupController
+                                                .emailErrorText.value,
+                                      ),
+                                    )),
+                                const SizedBox(
+                                  height: 15.0,
+                                  width: 0,
+                                ),
+                                Obx(() => TextField(
+                                      controller:
+                                          signupController.passwordController,
+                                      obscureText:
+                                          signupController.obscureText.value,
+                                      decoration: InputDecoration(
+                                        filled: true,
+                                        fillColor: const Color.fromARGB(
+                                            255, 243, 243, 243),
+                                        hintText: 'Password',
+                                        hintStyle: const TextStyle(
+                                            color: Color.fromARGB(
+                                                102, 26, 26, 26)),
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                          borderSide: BorderSide.none,
+                                        ),
+                                        contentPadding:
+                                            const EdgeInsets.symmetric(
+                                                horizontal: 20.0),
+                                        suffixIcon: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            IconButton(
+                                              icon: Icon(
+                                                signupController
+                                                        .obscureText.value
+                                                    ? Icons.visibility
+                                                    : Icons.visibility_off,
+                                              ),
+                                              onPressed: signupController
+                                                  .togglePasswordVisibility,
+                                            ),
+                                          ],
+                                        ),
+                                        errorText: signupController
+                                                .passwordErrorText.value.isEmpty
+                                            ? null
+                                            : signupController
+                                                .passwordErrorText.value,
+                                      ),
+                                    )),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
-                  const Text(
-                    'Please enter the information \n below to access.',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.grey,
-                    ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 20.0, vertical: 20.0),
+                  child: Column(
+                    children: [
+                      ElevatedButton(
+                        onPressed: signupController.register,
+                        style: SIGNUPButton.buildStyle(),
+                        child: SIGNUPButton.buildChild('SIGN UP'),
+                      ),
+                    ],
                   ),
-                  const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Image(
-                      image: AssetImage('assets/images/signupicon.png'),
-                      height: 100,
-                    ),
-                  ),
-                  const SizedBox(height: 20,width: 0,),
-                   SignupForm(),
-                ],
+                ),
+              ],
+            ),
+            Positioned(
+              top: 5,
+              left: 5,
+              child: IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () {
+                  Get.offAll(() => LoginPage(),
+                      transition: Transition.rightToLeft);
+                },
               ),
             ),
-          ),
-          Positioned(
-            top: 5,
-            left: 5,
-            child: IconButton(
-              icon: const Icon(Icons.arrow_back),
-              onPressed: () {
-                Get.offAll(() => const LoginPage(), transition: Transition.rightToLeft);
-              },
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

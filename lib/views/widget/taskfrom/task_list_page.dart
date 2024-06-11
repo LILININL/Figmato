@@ -14,19 +14,11 @@ class TaskListPage extends StatefulWidget {
   TaskListPageState createState() => TaskListPageState();
 }
 
-String getShortenedUserName(String fname, String lname, int maxLength) {
-  String fullName = '$fname $lname';
-  if (fullName.length > maxLength) {
-    return '${fullName.substring(0, maxLength)}...........';
-  }
-  return fullName;
-}
-
 class TaskListPageState extends State<TaskListPage> {
   final TaskController taskController = Get.put(TaskController());
   String fullName = '';
   String initial = '';
-  final int maxLength = 10; // กำหนดความยาวสูงสุดของชื่อผู้ใช้
+  final int maxLength = 18; // กำหนดความยาวสูงสุดของชื่อผู้ใช้
 
   @override
   void initState() {
@@ -55,6 +47,14 @@ class TaskListPageState extends State<TaskListPage> {
       }
     });
     print('Loaded user name: $fullName'); // Add this line to debug
+  }
+
+  String getShortenedUserName(String fname, String lname, int maxLength) {
+    String fullName = '$fname $lname';
+    if (fullName.length > maxLength) {
+      return '${fullName.substring(0, maxLength)}...........';
+    }
+    return fullName;
   }
 
   @override
@@ -213,6 +213,8 @@ class TaskListPageState extends State<TaskListPage> {
                                     todo.userTodoListId,
                                     todo.userTodoListTitle,
                                     todo.userTodoListDesc,
+                                    todo.userTodoListCompleted ==
+                                        "true", // ส่งค่า completed
                                   );
                                   if (result == true) {
                                     await taskController

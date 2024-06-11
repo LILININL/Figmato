@@ -9,16 +9,16 @@ import 'package:fristprofigmatest/views/widget/homefrom/home_page.dart';
 
 class AppRoutes {
   static final routes = [
-    GetPage(name: '/', page: () => const HomePage()),
+    GetPage(name: '/', page: () => HomePage()),
     GetPage(
       name: '/login',
-      page: () => const LoginPage(),
+      page: () => LoginPage(),
       transition: Transition.leftToRight,
       transitionDuration: const Duration(milliseconds: 500),
     ),
     GetPage(
       name: '/Signup',
-      page: () => const SignupPage(),
+      page: () => SignupPage(),
       transition: Transition.leftToRight,
       transitionDuration: const Duration(milliseconds: 500),
     ),
@@ -40,6 +40,9 @@ class AppRoutes {
         final taskId = Get.parameters['taskId'];
         final title = Get.parameters['title'];
         final desc = Get.parameters['desc'];
+        final completed =
+            Get.parameters['completed']; // เพิ่มบรรทัดนี้เพื่อดึงค่า completed
+
         if (taskId == null) {
           return const Center(child: Text('Task ID is missing.'));
         }
@@ -47,6 +50,7 @@ class AppRoutes {
           taskId: int.parse(taskId),
           initialTitle: title ?? '',
           initialDesc: desc ?? '',
+          initialCompleted: completed == 'true', // ส่งค่า completed
         );
       },
       transition: Transition.downToUp,

@@ -69,9 +69,11 @@ class SignupController extends GetxController {
         Get.snackbar(
           'ผิดพลาด',
           'ติดต่อผู่ดูแลระบบ',
+          
           snackPosition: SnackPosition.TOP,
           colorText: Colors.black,
         );
+        print(e);
       }
     } else {
       showErrorPopup();

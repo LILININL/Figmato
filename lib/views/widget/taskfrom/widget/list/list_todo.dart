@@ -33,6 +33,7 @@ class TodoList extends StatelessWidget {
                   todo.userTodoListId,
                   todo.userTodoListTitle,
                   todo.userTodoListDesc,
+                  todo.userTodoListCompleted == "true", // ส่งค่า completed
                 );
               },
             );

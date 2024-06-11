@@ -6,7 +6,7 @@ import 'dart:convert';
 class ApiService extends GetxService {
   Future<Map<String, dynamic>> signup(
       String email, String password, String firstName, String lastName) async {
-    final url = Uri.parse(baseUrl);
+    final url = Uri.parse('$baseUrl/create_user');
     final body = jsonEncode({
       'user_email': email,
       'user_password': password,
@@ -15,7 +15,7 @@ class ApiService extends GetxService {
     });
 
     final response = await http.post(url, headers: headers, body: body);
-
+    
     if (response.statusCode == 200 || response.statusCode == 201) {
       if (response.body == "OK") {
         return {'status': 'success', 'message': 'Signup successful'};
