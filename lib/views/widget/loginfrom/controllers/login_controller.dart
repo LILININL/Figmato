@@ -1,10 +1,8 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fristprofigmatest/services/loginapi_service.dart';
 import 'package:fristprofigmatest/utils/shared_preferences_helper.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
 
 class LoginController extends GetxController {
   final ApiService apiService = ApiService();
@@ -13,10 +11,24 @@ class LoginController extends GetxController {
   var emailErrorText = ''.obs;
   var obscureText = true.obs;
 
+  // สร้าง FocusNode สำหรับแต่ละช่องกรอก
+  final FocusNode emailFocusNode = FocusNode();
+  final FocusNode passwordFocusNode = FocusNode();
+
   @override
   void onInit() {
     super.onInit();
     emailController.addListener(_validateEmail);
+  }
+
+  @override
+  void onClose() {
+    // ทำลาย FocusNode เมื่อไม่ใช้แล้ว
+    emailFocusNode.dispose();
+    passwordFocusNode.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    super.onClose();
   }
 
   void _validateEmail() {
@@ -80,24 +92,3 @@ class EmailInputFormatter extends TextInputFormatter {
     return oldValue;
   }
 }
-
-// รายละเอียดของแต่ละส่วน
-// PasswordManager
-// PasswordManager(this.passwordController, this.obscureText);: Constructor สำหรับกำหนดค่าเริ่มต้นให้กับ passwordController และ obscureText
-// void clearPassword(Function setState): ฟังก์ชันที่ใช้เคลียร์ข้อความใน TextField ของรหัสผ่าน
-// setState: ฟังก์ชันที่ใช้เพื่ออัพเดทสถานะของ widget ใน Flutter
-// passwordController.clear(): เคลียร์ข้อความใน TextField ของรหัสผ่าน
-// void togglePasswordVisibility(Function setState): ฟังก์ชันที่ใช้เปลี่ยนสถานะการแสดง/ซ่อนรหัสผ่าน
-// obscureText = !obscureText: สลับค่าระหว่าง true และ false ของ obscureText เพื่อแสดงหรือซ่อนรหัสผ่าน
-// void checkPassword(Function setState): ฟังก์ชันที่ใช้ตรวจสอบความถูกต้องของรหัสผ่าน
-// ตรวจสอบว่ารหัสผ่านที่ผู้ใช้กรอกตรงกับรหัสผ่านที่กำหนดไว้ ('correct_password') หรือไม่
-// ถ้าไม่ตรง จะเคลียร์ข้อความใน TextField ของรหัสผ่าน
-// EmailManager
-// EmailManager(this.emailController): Constructor สำหรับกำหนดค่าเริ่มต้นให้กับ emailController
-// bool validateEmail(String email): ฟังก์ชันที่ใช้ตรวจสอบรูปแบบของอีเมล
-// ใช้ Regular Expression (RegExp) เพื่อตรวจสอบว่าอีเมลที่กรอกถูกต้องหรือไม่
-// EmailInputFormatter
-// TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue): ฟังก์ชันที่ใช้กรองข้อความในช่อง TextField ของอีเมล
-// ใช้ Regular Expression (RegExp) เพื่อตรวจสอบว่าข้อความที่กรอกอยู่ในรูปแบบอีเมลหรือไม่
-// ถ้าข้อความใหม่อยู่ในรูปแบบอีเมล จะคืนค่าข้อความใหม่ (newValue)
-// ถ้าไม่อยู่ในรูปแบบอีเมล จะคืนค่าข้อความเก่า (oldValue)

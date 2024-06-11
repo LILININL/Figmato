@@ -149,93 +149,99 @@ class TaskListPageState extends State<TaskListPage> {
             ),
           ),
         ),
-        body: FutureBuilder(
-          future: taskController.fetchTodoList(),
-          builder: (context, AsyncSnapshot snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
-            } else if (snapshot.hasError) {
-              checkInternetConnection(); // ตรวจสอบการเชื่อมต่ออินเทอร์เน็ตเมื่อเกิดข้อผิดพลาด
-              return Center(child: Text('Error: ${snapshot.error}'));
-            } else {
-              return Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: TextField(
-                      onChanged: (value) {
-                        taskController.updateSearchText(value);
-                      },
-                      decoration: InputDecoration(
-                        hintText: "ค้นหา.......",
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
+        body: GestureDetector(
+          onTap: () {
+            FocusScope.of(context).unfocus(); // ปิดคีย์บอร์ดเมื่อกดที่หน้าจอ
+          },
+          child: FutureBuilder(
+            future: taskController.fetchTodoList(),
+            builder: (context, AsyncSnapshot snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasError) {
+                checkInternetConnection(); // ตรวจสอบการเชื่อมต่ออินเทอร์เน็ตเมื่อเกิดข้อผิดพลาด
+                return Center(child: Text('Error: ${snapshot.error}'));
+              } else {
+                return Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: TextField(
+                        onChanged: (value) {
+                          taskController.updateSearchText(value);
+                        },
+                        decoration: InputDecoration(
+                          hintText: "ค้นหา.......",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          prefixIcon: const Icon(Icons.search),
                         ),
-                        prefixIcon: const Icon(Icons.search),
                       ),
                     ),
-                  ),
-                  const SizedBox(
-                      height: 8), // เพิ่ม spacing ระหว่างปุ่มและรายการ
-                  Expanded(
-                    child: RefreshIndicator(
-                      onRefresh: refreshData,
-                      child: Obx(() {
-                        if (taskController.filteredTodoList.isEmpty) {
-                          return ListView(
-                            children: [
-                              Center(
-                                child: Text(isInternetConnected
-                                    ? 'ไม่มีข้อมูล'
-                                    : 'ไม่พบอินเตอร์เน็ต'),
-                              ),
-                            ],
-                          );
-                        } else {
-                          return ListView(
-                            children:
-                                taskController.filteredTodoList.map((todo) {
-                              return TaskItem(
-                                id: todo.userTodoListId, // ตรวจสอบค่า null
-                                title:
-                                    todo.userTodoListTitle, // ตรวจสอบค่า null
-                                time: todo.userTodoListLastUpdate
-                                    .toString(), // ตรวจสอบค่า null
-                                description:
-                                    todo.userTodoListDesc, // ตรวจสอบค่า null
-                                isCompleted:
-                                    todo.userTodoListCompleted == "true",
-                                onChanged: (value) {
-                                  taskController.toggleCompletion(
-                                      todo.userTodoListId, value!);
-                                  print(
-                                      'เช็ค todo  ID: ${todo.userTodoListId}');
-                                },
-                                onEdit: () async {
-                                  final result = await showTaskEditBottomSheet(
-                                    context,
-                                    todo.userTodoListId,
-                                    todo.userTodoListTitle, // ตรวจสอบค่า null
-                                    todo.userTodoListDesc, // ตรวจสอบค่า null
-                                    todo.userTodoListCompleted ==
-                                        "true", // ส่งค่า completed
-                                  );
-                                  if (result == true) {
-                                    await taskController
-                                        .fetchTodoList(); // รีโหลดข้อมูลเมื่อกลับมาจากหน้าแก้ไข
-                                  }
-                                },
-                              );
-                            }).toList(),
-                          );
-                        }
-                      }),
+                    const SizedBox(
+                        height: 8), // เพิ่ม spacing ระหว่างปุ่มและรายการ
+                    Expanded(
+                      child: RefreshIndicator(
+                        onRefresh: refreshData,
+                        child: Obx(() {
+                          if (taskController.filteredTodoList.isEmpty) {
+                            return ListView(
+                              children: [
+                                Center(
+                                  child: Text(isInternetConnected
+                                      ? 'ไม่มีข้อมูล'
+                                      : 'ไม่พบอินเตอร์เน็ต'),
+                                ),
+                              ],
+                            );
+                          } else {
+                            return ListView(
+                              children:
+                                  taskController.filteredTodoList.map((todo) {
+                                return TaskItem(
+                                  id: todo.userTodoListId, // ตรวจสอบค่า null
+                                  title:
+                                      todo.userTodoListTitle, // ตรวจสอบค่า null
+                                  time: todo.userTodoListLastUpdate
+                                      .toString(), // ตรวจสอบค่า null
+                                  description:
+                                      todo.userTodoListDesc, // ตรวจสอบค่า null
+                                  isCompleted:
+                                      todo.userTodoListCompleted == "true",
+                                  onChanged: (value) {
+                                    taskController.toggleCompletion(
+                                        todo.userTodoListId, value!);
+                                    print(
+                                        'เช็ค todo  ID: ${todo.userTodoListId}');
+                                  },
+                                  onEdit: () async {
+                                    final result =
+                                        await showTaskEditBottomSheet(
+                                      context,
+                                      todo.userTodoListId,
+                                      todo.userTodoListTitle, // ตรวจสอบค่า null
+                                      todo.userTodoListDesc, // ตรวจสอบค่า null
+                                      todo.userTodoListCompleted ==
+                                          "true", // ส่งค่า completed
+                                    );
+                                    if (result == true) {
+                                      await taskController
+                                          .fetchTodoList(); // รีโหลดข้อมูลเมื่อกลับมาจากหน้าแก้ไข
+                                    }
+                                  },
+                                );
+                              }).toList(),
+                            );
+                          }
+                        }),
+                      ),
                     ),
-                  ),
-                ],
-              );
-            }
-          },
+                  ],
+                );
+              }
+            },
+          ),
         ),
         floatingActionButton: FloatingActionButton(
           backgroundColor: Colors.transparent,

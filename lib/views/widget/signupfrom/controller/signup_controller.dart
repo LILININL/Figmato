@@ -18,6 +18,12 @@ class SignupController extends GetxController {
   final ApiService apiService =
       Get.put(ApiService()); // Initialize the ApiService
 
+  // สร้าง FocusNode สำหรับแต่ละช่องกรอก
+  final FocusNode firstNameFocusNode = FocusNode();
+  final FocusNode lastNameFocusNode = FocusNode();
+  final FocusNode emailFocusNode = FocusNode();
+  final FocusNode passwordFocusNode = FocusNode();
+
   @override
   void onInit() {
     super.onInit();
@@ -33,6 +39,10 @@ class SignupController extends GetxController {
     lastNameController.dispose();
     emailController.dispose();
     passwordController.dispose();
+    firstNameFocusNode.dispose();
+    lastNameFocusNode.dispose();
+    emailFocusNode.dispose();
+    passwordFocusNode.dispose();
     super.onClose();
   }
 
@@ -69,7 +79,6 @@ class SignupController extends GetxController {
         Get.snackbar(
           'ผิดพลาด',
           'ติดต่อผู่ดูแลระบบ',
-          
           snackPosition: SnackPosition.TOP,
           colorText: Colors.black,
         );

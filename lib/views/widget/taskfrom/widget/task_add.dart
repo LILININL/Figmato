@@ -19,6 +19,18 @@ class TaskAddPageState extends State<TaskAddPage> {
   final TextEditingController descController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
+  // สร้าง FocusNode สำหรับแต่ละช่องกรอก
+  final FocusNode titleFocusNode = FocusNode();
+  final FocusNode descFocusNode = FocusNode();
+
+  @override
+  void dispose() {
+    // ทำลาย FocusNode เมื่อไม่ใช้แล้ว
+    titleFocusNode.dispose();
+    descFocusNode.dispose();
+    super.dispose();
+  }
+
   void saveTask() async {
     if (!_formKey.currentState!.validate()) {
       return;
@@ -87,127 +99,140 @@ class TaskAddPageState extends State<TaskAddPage> {
               MyAppGradients.imageBackground('assets/images/taskappbbarbg.png'),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(14.0),
-        child: SingleChildScrollView(
-          child: Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                Container(
-                  padding: const EdgeInsets.fromLTRB(15, 5, 0, 5),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        spreadRadius: 2,
-                        blurRadius: 5,
-                        offset:
-                            const Offset(0, 3), // changes position of shadow
-                      ),
-                    ],
-                  ),
-                  child: TextFormField(
-                    controller: titleController,
-                    decoration: const InputDecoration(
-                      hintText: 'Meeting',
-                      border: InputBorder.none,
-                    ),
-                    validator: (value) {
-                      if (!_validateInput(value ?? '')) {
-                        return 'Please enter a title';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-                const SizedBox(height: 16),
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        spreadRadius: 2,
-                        blurRadius: 5,
-                        offset:
-                            const Offset(0, 3), // changes position of shadow
-                      ),
-                    ],
-                  ),
-                  child: TextFormField(
-                    controller: descController,
-                    maxLines: 4,
-                    decoration: const InputDecoration(
-                      hintText:
-                          'An effective meeting agenda is a plan you share with your meeting participants. It’ll help your team set clear expectations of what needs to happen before.',
-                      border: InputBorder.none,
-                    ),
-                    validator: (value) {
-                      if (!_validateInput(value ?? '')) {
-                        return 'Please enter a description';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-                const SizedBox(height: 16),
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        spreadRadius: 2,
-                        blurRadius: 5,
-                        offset:
-                            const Offset(0, 3), // changes position of shadow
-                      ),
-                    ],
-                  ),
-                  child: Row(
-                    children: [
-                      const Text('Success',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.green)),
-                      const Spacer(),
-                      Switch(
-                        activeColor: Colors.white,
-                        activeTrackColor: Colors.green, // สี track ตอนเปิด
-                        inactiveThumbColor: Colors.white, // สี thumb ตอนปิด
-                        inactiveTrackColor: Colors.grey, // สี track ตอนปิด
-                        value: isSuccess,
-                        onChanged: (value) {
-                          setState(() {
-                            isSuccess = value;
-                          });
-                          print('Success status: $isSuccess');
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 16),
-                ElevatedButton(
-                  onPressed: saveTask,
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: const Size(double.infinity, 60),
-                    backgroundColor: Colors.green,
-                    shape: RoundedRectangleBorder(
+      body: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).unfocus(); // ปิดคีย์บอร์ดเมื่อกดที่หน้าจอ
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(14.0),
+          child: SingleChildScrollView(
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.fromLTRB(15, 5, 0, 5),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
                       borderRadius: BorderRadius.circular(10),
-                    ), // Background color
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 2,
+                          blurRadius: 5,
+                          offset:
+                              const Offset(0, 3), // changes position of shadow
+                        ),
+                      ],
+                    ),
+                    child: TextFormField(
+                      controller: titleController,
+                      focusNode: titleFocusNode, // ตั้งค่า FocusNode
+                      textInputAction:
+                          TextInputAction.next, // ตั้งค่าให้แสดงปุ่ม "Next"
+                      onFieldSubmitted: (_) {
+                        FocusScope.of(context).requestFocus(
+                            descFocusNode); // ย้ายโฟกัสไปยังช่องถัดไป
+                      },
+                      decoration: const InputDecoration(
+                        hintText: 'Meeting',
+                        border: InputBorder.none,
+                      ),
+                      validator: (value) {
+                        if (!_validateInput(value ?? '')) {
+                          return 'Please enter a title';
+                        }
+                        return null;
+                      },
+                    ),
                   ),
-                  child: const Text('Save',
-                      style: TextStyle(fontSize: 18, color: Colors.white)),
-                ),
-              ],
+                  const SizedBox(height: 16),
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 2,
+                          blurRadius: 5,
+                          offset:
+                              const Offset(0, 3), // changes position of shadow
+                        ),
+                      ],
+                    ),
+                    child: TextFormField(
+                      controller: descController,
+                      focusNode: descFocusNode, // ตั้งค่า FocusNode
+                      maxLines: 4,
+                      decoration: const InputDecoration(
+                        hintText:
+                            'An effective meeting agenda is a plan you share with your meeting participants. It’ll help your team set clear expectations of what needs to happen before.',
+                        border: InputBorder.none,
+                      ),
+                      validator: (value) {
+                        if (!_validateInput(value ?? '')) {
+                          return 'Please enter a description';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 2,
+                          blurRadius: 5,
+                          offset:
+                              const Offset(0, 3), // changes position of shadow
+                        ),
+                      ],
+                    ),
+                    child: Row(
+                      children: [
+                        const Text('Success',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.green)),
+                        const Spacer(),
+                        Switch(
+                          activeColor: Colors.white,
+                          activeTrackColor: Colors.green, // สี track ตอนเปิด
+                          inactiveThumbColor: Colors.white, // สี thumb ตอนปิด
+                          inactiveTrackColor: Colors.grey, // สี track ตอนปิด
+                          value: isSuccess,
+                          onChanged: (value) {
+                            setState(() {
+                              isSuccess = value;
+                            });
+                            print('Success status: $isSuccess');
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: saveTask,
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: const Size(double.infinity, 60),
+                      backgroundColor: Colors.green,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ), // Background color
+                    ),
+                    child: const Text('Save',
+                        style: TextStyle(fontSize: 18, color: Colors.white)),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
