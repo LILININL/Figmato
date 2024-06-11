@@ -40,7 +40,7 @@ class TaskController extends GetxController {
   void toggleCompletion(int id, bool value) {
     var index = todoList.indexWhere((todo) => todo.userTodoListId == id);
     if (index != -1) {
-      todoList[index].userTodoListCompleted = value.toString();
+      todoList[index].userTodoListCompleted = value ? 'true' : 'false';
       todoList.refresh();
     }
   }
@@ -48,7 +48,7 @@ class TaskController extends GetxController {
   void selectAll(bool value) {
     final listToSelect = searchText.value.isEmpty ? todoList : filteredTodoList;
     for (var todo in listToSelect) {
-      todo.userTodoListCompleted = value.toString();
+      todo.userTodoListCompleted = value ? 'true' : 'false';
     }
     todoList.refresh();
   }
@@ -87,6 +87,6 @@ class TaskEditController extends GetxController {
   }
 
   Future<void> saveTask(int taskId) async {
-    
+    // Implement the save task logic here
   }
 }

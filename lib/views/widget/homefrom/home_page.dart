@@ -11,7 +11,7 @@ class HomePage extends StatefulWidget {
 }
 
 class HomePageState extends State<HomePage> {
-  int _counter = 5;
+  int _counter = 3;
   late CountdownTimer _countdownTimer;
 
   @override

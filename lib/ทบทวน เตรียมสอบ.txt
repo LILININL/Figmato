@@ -1,0 +1,54 @@
+การนำเข้าแพ็กเกจและคลาส
+
+นำเข้าแพ็กเกจต่าง ๆ ที่จำเป็น เช่น flutter/material.dart สำหรับ UI, get/get.dart สำหรับการจัดการสถานะด้วย GetX, และ shared_preferences_helper.dart สำหรับการจัดการ SharedPreferences
+
+คลาส TaskEditPage
+
+TaskEditPage เป็น StatefulWidget ที่รับ arguments เพื่อส่งไปยัง State
+
+คลาส TaskEditPageState
+
+สร้าง State สำหรับ TaskEditPage โดยใช้ TaskEditController เพื่อจัดการข้อมูล
+ตัวแปร titleController และ descriptionController สำหรับควบคุม TextField
+ตัวแปร _formKey สำหรับควบคุมฟอร์ม
+
+ฟังก์ชัน initState()
+
+ฟังก์ชันนี้จะถูกเรียกเมื่อ State ถูกสร้างขึ้นครั้งแรก
+ตั้งค่าเริ่มต้นให้กับ titleController และ descriptionController ด้วยข้อมูลที่ได้รับจาก widget.args
+ตั้งค่าเริ่มต้น taskCompleted ให้กับ taskEditController ด้วยค่า initialCompleted
+เรียกใช้ฟังก์ชัน _loadUserId() เพื่อโหลด userId จาก SharedPreferences
+ตั้งค่าเริ่มต้นให้กับ userTodoTypeId และ userTodoTypeName
+
+ฟังก์ชัน _loadUserId()
+
+ฟังก์ชันนี้ทำการโหลด userId จาก SharedPreferences และตั้งค่าให้กับ taskEditController
+ถ้าไม่มี userId ใน SharedPreferences จะตั้งค่าเริ่มต้นเป็น '0'
+
+ฟังก์ชัน _validateInput()
+
+ฟังก์ชันนี้ใช้ตรวจสอบความถูกต้องของข้อมูลที่ผู้ใช้กรอก โดยตรวจสอบว่าข้อมูลไม่เป็นค่าว่าง
+
+ฟังก์ชัน _showErrorMessage()
+
+ฟังก์ชันนี้ใช้แสดงข้อความข้อผิดพลาดโดยใช้ ScaffoldMessenger
+
+เมธอด build()
+
+- AppBar:
+  - แสดงชื่อแอป "You Todu" และปุ่มย้อนกลับที่ใช้ Get.back() เพื่อกลับไปยังหน้าก่อนหน้า
+
+- Form:
+  - ประกอบด้วย TextFormField สำหรับกรอกชื่อและคำอธิบายของ Task
+  - เมื่อข้อมูลใน TextFormField เปลี่ยนแปลง จะเรียกใช้เมธอด setTitle() และ setDescription() ของ taskEditController เพื่ออัพเดทค่า
+  - ส่วนของ Switch ใช้สำหรับกำหนดสถานะการทำงานของ Task (completed) โดยใช้ taskEditController.setCompleted()
+  - ปุ่ม Save ตรวจสอบความถูกต้องของข้อมูลที่กรอก และเรียกใช้ taskEditController.saveTask() เพื่อบันทึกการแก้ไข Task
+
+การเชื่อมต่อและการส่งข้อมูลระหว่างฟังก์ชัน
+
+- ตั้งค่าเริ่มต้นใน initState(): เมื่อ TaskEditPageState ถูกสร้างขึ้น ฟังก์ชัน initState() จะตั้งค่าเริ่มต้นให้กับ titleController, descriptionController, และ taskCompleted รวมถึงเรียก _loadUserId() เพื่อโหลด userId
+- การอัพเดทข้อมูล: เมื่อผู้ใช้แก้ไขข้อมูลใน TextFormField หรือ Switch ข้อมูลจะถูกส่งไปยัง taskEditController ผ่านเมธอด setTitle(), setDescription(), และ setCompleted()
+- การบันทึกข้อมูล: เมื่อกดปุ่ม Save จะตรวจสอบความถูกต้องของข้อมูลที่กรอก ถ้าข้อมูลถูกต้องจะเรียก taskEditController.saveTask() เพื่อนำข้อมูลไปบันทึก
+
+การเชื่อมต่อและการส่งข้อมูลเหล่านี้ทำให้การทำงานของหน้าการแก้ไข Task สามารถทำงานได้อย่างมีประสิทธิภาพและครอบคลุมทุกฟังก์ชันที่จำเป็นในการแก้ไขและบันทึกข้อมูล Task
+"""

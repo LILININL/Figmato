@@ -32,8 +32,8 @@ class TaskEditPageState extends State<TaskEditPage> {
     taskEditController
         .setCompleted(widget.args.initialCompleted); // Set initial value
     _loadUserId(); // โหลด userId
-    taskEditController.setUserTodoTypeId(13); // ค่าเริ่มต้น
-    taskEditController.setUserTodoTypeName("Objective-C"); // ค่าเริ่มต้น
+    // taskEditController.setUserTodoTypeId(13); // ค่าเริ่มต้น
+    // taskEditController.setUserTodoTypeName("Objective-C"); // ค่าเริ่มต้น
   }
 
   Future<void> _loadUserId() async {
