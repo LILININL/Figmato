@@ -6,9 +6,13 @@ class AppColors {
 }
 
 class NotificationColors {
-  static const Color dark =  Colors.black87;
-  static const Color white =  Colors.white70;
-  static const Color red =  Colors.red;
-  static const Color green =  Colors.green;
-  static const Color grey =  Colors.grey;
- }
+  static const Color dark = Colors.black87;
+  static const Color white = Colors.white70;
+  static const Color red = Colors.red;
+  static const Color green = Colors.green;
+  static const Color grey = Colors.grey;
+}
+
+class bottomColor {
+  static const Color b = Color(0xFFF3F3F3);
+}

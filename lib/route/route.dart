@@ -14,7 +14,7 @@ class AppRoutes {
     GetPage(
       name: '/login',
       page: () => LoginPage(),
-      transition: Transition.leftToRight,
+      transition: Transition.downToUp,
       transitionDuration: const Duration(milliseconds: 500),
     ),
     GetPage(
@@ -26,13 +26,13 @@ class AppRoutes {
     GetPage(
       name: '/TaskList',
       page: () => TaskListPage(),
-      transition: Transition.downToUp,
+      transition: Transition.leftToRight,
       transitionDuration: const Duration(milliseconds: 500),
     ),
     GetPage(
       name: '/TaskAdd',
       page: () => const TaskAddPage(),
-      transition: Transition.downToUp,
+      transition: Transition.leftToRight,
       transitionDuration: const Duration(milliseconds: 500),
     ),
     GetPage(

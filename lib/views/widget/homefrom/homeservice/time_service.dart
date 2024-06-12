@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 class CountdownTimer {
-  int _counter = 3; // จำนวนวินาทีที่ต้องการนับถอยหลัง
+  int _counter = 2; // จำนวนวินาทีที่ต้องการนับถอยหลัง
   late Timer _timer;
   final VoidCallback onFinished;
   final ValueChanged<int> onTick;

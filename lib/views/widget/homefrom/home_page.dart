@@ -11,7 +11,7 @@ class HomePage extends StatefulWidget {
 }
 
 class HomePageState extends State<HomePage> {
-  int _counter = 3;
+  // int _counter = 3;
   late CountdownTimer _countdownTimer;
 
   @override
@@ -23,7 +23,7 @@ class HomePageState extends State<HomePage> {
       },
       onTick: (remainingTime) {
         setState(() {
-          _counter = remainingTime;
+          // _counter = remainingTime;
         });
       },
     );
@@ -44,28 +44,32 @@ class HomePageState extends State<HomePage> {
           _countdownTimer.cancelTimer();
           Get.toNamed('/login');
         },
-        child: Stack(
-          children: [
-            const BackgroundWidget(),
-            Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    height: 358.0,
-                    width: 250.0,
-                    decoration: const BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage('assets/images/Frame.png'),
-                        fit: BoxFit.contain,
-                      ),
+        child: Container(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/images/bghome.png'),
+              fit: BoxFit.cover,
+            ),
+          ),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  height: 358.0,
+                  width: 220.0,
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage('assets/images/Frame.png'),
+                      fit: BoxFit.contain,
                     ),
                   ),
-                  Text('Tap to Next Page or Wait $_counter', style: const TextStyle(fontSize: 16)),
-                ],
-              ),
+                ),
+                // Text('Tap to Next Page or Wait $_counter',
+                //     style: const TextStyle(fontSize: 16)),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

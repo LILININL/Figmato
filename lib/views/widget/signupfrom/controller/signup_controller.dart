@@ -107,10 +107,10 @@ class SignupController extends GetxController {
     }
 
     if (emailController.text.isEmpty) {
-      emailErrorText.value = 'Email is required';
+      emailErrorText.value = 'รุปแบบมีเมลไม่ถูกต้อง กรุณากรอก Email';
       isValid = false;
     } else if (!GetUtils.isEmail(emailController.text)) {
-      emailErrorText.value = 'รุปแบบมีเมลไม่ถูกต้อง..';
+      emailErrorText.value = 'รุปแบบอีเมลไม่ถูกต้อง..';
       isValid = false;
     } else {
       emailErrorText.value = '';

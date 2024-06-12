@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:fristprofigmatest/colors/colors.dart';
-import 'package:fristprofigmatest/utils/shared_preferences_helper.dart';
 import 'package:fristprofigmatest/utils/exitfuntion/exit_confirmation_dialog.dart';
+import 'package:fristprofigmatest/utils/shared_preferences_helper.dart';
 import 'package:fristprofigmatest/views/widget/taskfrom/widget/bg.dart';
 import 'package:fristprofigmatest/views/widget/taskfrom/widget/profile_bottom_sheet.dart';
-import 'package:fristprofigmatest/views/widget/taskfrom/widget/task_edit_morevert.dart';
 import 'package:fristprofigmatest/views/widget/taskfrom/widget/task_card_item.dart';
+import 'package:fristprofigmatest/views/widget/taskfrom/widget/task_edit_morevert.dart';
 import 'package:get/get.dart';
-import 'package:connectivity/connectivity.dart'; // import สำหรับตรวจสอบการเชื่อมต่ออินเทอร์เน็ต
 import 'widget/controller/task_controller.dart';
+import 'package:intl/intl.dart'; // นำเข้า intl
 
 class TaskListPage extends StatefulWidget {
   @override
@@ -28,8 +27,16 @@ class TaskListPageState extends State<TaskListPage> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       loadUserName();
-      checkInternetConnection();
     });
+    if (Get.arguments == true) {
+      refreshData(); // เรียกใช้ฟังก์ชัน refreshData เมื่อได้รับ argument เป็น true
+    }
+  }
+
+  String formatDateTime(String dateTimeString) {
+    final DateTime dateTime = DateTime.parse(dateTimeString);
+    final DateFormat formatter = DateFormat('hh:mm a -MM/dd/yy');
+    return formatter.format(dateTime);
   }
 
   Future<void> loadUserName() async {
@@ -68,26 +75,9 @@ class TaskListPageState extends State<TaskListPage> {
     return fullName;
   }
 
-  Future<void> checkInternetConnection() async {
-    var connectivityResult = await (Connectivity().checkConnectivity());
-    setState(() {
-      isInternetConnected = connectivityResult != ConnectivityResult.none;
-    });
-
-    if (!isInternetConnected) {
-      // แสดงข้อความแจ้งเตือนเมื่อไม่มีการเชื่อมต่ออินเทอร์เน็ต
-      Get.snackbar(
-        'ไม่พบอินเตอร์เน็ต',
-        'กรุณาตรวจสอบการเชื่อมต่ออินเตอร์เน็ตของคุณ',
-        snackPosition: SnackPosition.TOP,
-      );
-    }
-  }
-
   Future<void> refreshData() async {
     await taskController.fetchTodoList();
     setState(() {}); // Refresh the state of the widget
-    checkInternetConnection();
   }
 
   @override
@@ -153,94 +143,97 @@ class TaskListPageState extends State<TaskListPage> {
           onTap: () {
             FocusScope.of(context).unfocus(); // ปิดคีย์บอร์ดเมื่อกดที่หน้าจอ
           },
-          child: FutureBuilder(
-            future: taskController.fetchTodoList(),
-            builder: (context, AsyncSnapshot snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: CircularProgressIndicator());
-              } else if (snapshot.hasError) {
-                checkInternetConnection(); // ตรวจสอบการเชื่อมต่ออินเทอร์เน็ตเมื่อเกิดข้อผิดพลาด
-                return Center(child: Text('Error: ${snapshot.error}'));
-              } else {
-                return Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: TextField(
-                        onChanged: (value) {
-                          taskController.updateSearchText(value);
-                        },
-                        decoration: InputDecoration(
-                          hintText: "ค้นหา.......",
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.25),
+                        offset: const Offset(0, 2),
+                        blurRadius: 10,
+                        spreadRadius: 0,
+                      ),
+                    ],
+                  ),
+                  child: TextField(
+                    onChanged: (value) {
+                      taskController.updateSearchText(value);
+                    },
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.white,
+                      hoverColor: Colors.transparent,
+                      hintText: "ค้นหา.......",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15),
+                        borderSide: BorderSide.none,
+                      ),
+                      prefixIcon: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Image.asset('assets/images/searchnormal1.png'),
+                      ),
+                      hintStyle: const TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 8),
+              Expanded(
+                child: RefreshIndicator(
+                  onRefresh: refreshData,
+                  child: Obx(() {
+                    if (taskController.filteredTodoList.isEmpty) {
+                      return ListView(
+                        children: [
+                          Center(
+                            child: Text(isInternetConnected
+                                ? 'ไม่มีข้อมูล'
+                                : 'ไม่พบอินเตอร์เน็ต'),
                           ),
-                          prefixIcon: const Icon(Icons.search),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                        height: 8), // เพิ่ม spacing ระหว่างปุ่มและรายการ
-                    Expanded(
-                      child: RefreshIndicator(
-                        onRefresh: refreshData,
-                        child: Obx(() {
-                          if (taskController.filteredTodoList.isEmpty) {
-                            return ListView(
-                              children: [
-                                Center(
-                                  child: Text(isInternetConnected
-                                      ? 'ไม่มีข้อมูล'
-                                      : 'ไม่พบอินเตอร์เน็ต'),
-                                ),
-                              ],
-                            );
-                          } else {
-                            return ListView(
-                              children:
-                                  taskController.filteredTodoList.map((todo) {
-                                return TaskItem(
-                                  id: todo.userTodoListId, // ตรวจสอบค่า null
-                                  title:
-                                      todo.userTodoListTitle, // ตรวจสอบค่า null
-                                  time: todo.userTodoListLastUpdate
-                                      .toString(), // ตรวจสอบค่า null
-                                  description:
-                                      todo.userTodoListDesc, // ตรวจสอบค่า null
-                                  isCompleted:
-                                      todo.userTodoListCompleted == "true",
-                                  onChanged: (value) {
-                                    taskController.toggleCompletion(
-                                        todo.userTodoListId, value!);
-                                    print(
-                                        'เช็ค todo  ID: ${todo.userTodoListId}');
-                                  },
-                                  onEdit: () async {
-                                    final result =
-                                        await showTaskEditBottomSheet(
-                                      context,
-                                      todo.userTodoListId,
-                                      todo.userTodoListTitle, // ตรวจสอบค่า null
-                                      todo.userTodoListDesc, // ตรวจสอบค่า null
-                                      todo.userTodoListCompleted ==
-                                          "true", // ส่งค่า completed
-                                    );
-                                    if (result == true) {
-                                      await taskController
-                                          .fetchTodoList(); // รีโหลดข้อมูลเมื่อกลับมาจากหน้าแก้ไข
-                                    }
-                                  },
-                                );
-                              }).toList(),
-                            );
-                          }
-                        }),
-                      ),
-                    ),
-                  ],
-                );
-              }
-            },
+                        ],
+                      );
+                    } else {
+                      return ListView(
+                        children: taskController.filteredTodoList.map((todo) {
+                          return TaskItem(
+                            id: todo.userTodoListId,
+                            title: todo.userTodoListTitle,
+                            time: formatDateTime(
+                                todo.userTodoListLastUpdate.toString()),
+                            description: todo.userTodoListDesc,
+                            isCompleted: todo.userTodoListCompleted == "true",
+                            onChanged: (value) {
+                              taskController.toggleCompletion(
+                                  todo.userTodoListId, value!);
+                              print('เช็ค todo  ID: ${todo.userTodoListId}');
+                            },
+                            onEdit: () async {
+                              final result = await showTaskEditBottomSheet(
+                                context,
+                                todo.userTodoListId,
+                                todo.userTodoListTitle,
+                                todo.userTodoListDesc,
+                                todo.userTodoListCompleted == "true",
+                              );
+                              if (result == true) {
+                                await taskController.fetchTodoList();
+                              }
+                            },
+                          );
+                        }).toList(),
+                      );
+                    }
+                  }),
+                ),
+              ),
+            ],
           ),
         ),
         floatingActionButton: FloatingActionButton(

@@ -21,25 +21,60 @@ class ProfileBottomSheet extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Text(
-            'ออกจากระบบ',
-            style: TextStyle(color: NotificationColors.dark, fontSize: 18),
+          Container(
+            height: 4,
+            width: 40,
+            decoration: BoxDecoration(
+              color: Colors.grey,
+              borderRadius: BorderRadius.circular(2),
+            ),
+            margin: const EdgeInsets.only(
+                bottom: 10), // Adding some margin at the bottom
           ),
           const Text(
-            'คุณต้องการออกจากระบบ ?',
-            style: TextStyle(color: NotificationColors.dark, fontSize: 16),
+            'SIGN OUT',
+            style: TextStyle(
+                color: NotificationColors.dark,
+                fontSize: 20, // Font size in pixels
+                height: 1.26,
+                fontWeight: FontWeight.w500),
           ),
           const SizedBox(
-            height: 16,
+            height: 5,
+          ),
+          const SizedBox(
+            height: 5,
+            width: 0,
+          ),
+          const Text(
+            'Do you want to log out?',
+            style: TextStyle(
+                color: NotificationColors.dark,
+                fontSize: 16, // Font size in pixels
+                height: 1.26,
+                fontWeight: FontWeight.w400),
+          ),
+          const SizedBox(
+            height: 10,
             width: 0,
           ),
           ListTile(
-            leading: Image.asset('assets/icons/Logout.png'),
+            leading: Image.asset(
+                'assets/icons/Logout.png'), // Custom icon for signout
             title: const Text(
-              'ออกจากระบบ',
+              'Signout',
               style: TextStyle(color: NotificationColors.dark, fontSize: 16),
             ),
+            trailing: Image.asset(
+                'assets/icons/arrowright2.png'), // Custom arrow on the right side
             onTap: _signOut,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 10),
+            child: Container(
+              height: 1,
+              color: Colors.grey[400], // Green divider line
+            ),
           ),
         ],
       ),

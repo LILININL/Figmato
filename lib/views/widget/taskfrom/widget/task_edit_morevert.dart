@@ -13,10 +13,25 @@ Future<bool?> showTaskEditBottomSheet(BuildContext context, int taskId,
     ),
     builder: (BuildContext context) {
       return Container(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(10),
         height: 200,
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Container(
+              height: 4,
+              width: 40,
+              decoration: BoxDecoration(
+                color: Colors.grey,
+                borderRadius: BorderRadius.circular(2),
+              ),
+              margin: const EdgeInsets.only(
+                  bottom: 16), // Adding some margin at the bottom
+            ),
+            const SizedBox(
+              height: 16,
+              width: 0,
+            ),
             ListTile(
               leading: Image.asset(
                 'assets/icons/Edit.png',
@@ -26,6 +41,8 @@ Future<bool?> showTaskEditBottomSheet(BuildContext context, int taskId,
                 'Edit',
                 style: TextStyle(color: NotificationColors.dark, fontSize: 16),
               ),
+              trailing: Image.asset(
+                  'assets/icons/arrowright2.png'), // Custom arrow on the right side
               onTap: () async {
                 Get.back(); // ปิด bottom sheet
                 final result = await Get.toNamed(
@@ -50,6 +67,8 @@ Future<bool?> showTaskEditBottomSheet(BuildContext context, int taskId,
                 'Delete',
                 style: TextStyle(color: NotificationColors.dark, fontSize: 16),
               ),
+              trailing: Image.asset(
+                  'assets/icons/arrowright2.png'), // Custom arrow on the right side
               onTap: () async {
                 bool confirmDelete = await Get.defaultDialog<bool>(
                       title: "ยืนยันการลบ",
@@ -96,6 +115,13 @@ Future<bool?> showTaskEditBottomSheet(BuildContext context, int taskId,
                   Get.back(result: false); // ปิด bottom sheet หากยกเลิก
                 }
               },
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 5),
+              child: Container(
+                height: 1,
+                color: Colors.grey[400], // Green divider line
+              ),
             ),
           ],
         ),

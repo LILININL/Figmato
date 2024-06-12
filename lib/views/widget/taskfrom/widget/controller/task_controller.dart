@@ -13,6 +13,14 @@ class TaskController extends GetxController {
     fetchTodoList();
   }
 
+  @override
+  void onReady() {
+    super.onReady();
+    if (Get.arguments == true) {
+      fetchTodoList();
+    }
+  }
+
   Future<void> fetchTodoList() async {
     try {
       todoList.value = await TaskService.fetchTodoList();
@@ -51,42 +59,5 @@ class TaskController extends GetxController {
       todo.userTodoListCompleted = value ? 'true' : 'false';
     }
     todoList.refresh();
-  }
-}
-
-class TaskEditController extends GetxController {
-  var taskCompleted = false.obs;
-  var userId = ''.obs;
-  var title = ''.obs;
-  var description = ''.obs;
-  var userTodoTypeId = 13.obs;
-  var userTodoTypeName = 'Objective-C'.obs;
-
-  void setCompleted(bool value) {
-    taskCompleted.value = value;
-  }
-
-  void setUserId(String value) {
-    userId.value = value;
-  }
-
-  void setTitle(String value) {
-    title.value = value;
-  }
-
-  void setDescription(String value) {
-    description.value = value;
-  }
-
-  void setUserTodoTypeId(int value) {
-    userTodoTypeId.value = value;
-  }
-
-  void setUserTodoTypeName(String value) {
-    userTodoTypeName.value = value;
-  }
-
-  Future<void> saveTask(int taskId) async {
-    // Implement the save task logic here
   }
 }

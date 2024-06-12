@@ -58,9 +58,12 @@ class TaskEditController extends GetxController {
         backgroundColor: Colors.green,
         colorText: Colors.white,
       );
-      Future.delayed(Duration(seconds: 1), () {
-        Get.offNamed('/TaskList',
-            arguments: true); // ส่งผลลัพธ์กลับเมื่อบันทึกสำเร็จ
+      Future.delayed(const Duration(seconds: 1), () {
+        Get.offAllNamed(
+          '/TaskList',
+          arguments: true,
+        );
+        // ส่งผลลัพธ์กลับเมื่อบันทึกสำเร็จ
       });
     } else {
       Get.snackbar(
